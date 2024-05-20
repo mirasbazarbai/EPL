@@ -47,38 +47,42 @@ let comments = [
     "Шеффилд Юнайтед"
 ];
 
-for (let i = 0; i < 20; i++) {
-    let newpost = post.cloneNode(true);
+let likeButton = post.getElementsByClassName("button")[0];
+let likeCounter = post.getElementsByClassName("counter")[0];
+
+likeButton.addEventListener("click", function() {
+    let count = parseInt(likeCounter.textContent);
+    likeCounter.textContent = count + 1;
+});
+
+for (let i = 0; i < 100; i++) {
+    let newpost = post.cloneNode(true); 
     let imgpost = newpost.getElementsByClassName("img")[0];
     imgpost.setAttribute("src", imgurls[i % 20]);
 
-    let commentIndex = i % comments.length; // Чередование комментариев
-    let comment = comments[commentIndex];
+    let comment = comments[i%20];
     let commentElement = document.createElement("p");
     commentElement.textContent = comment;
+    commentElement.className = "comment";
+    
+    let teamNameElements = newpost.getElementsByTagName("p");
+    for (let j = 0; j < teamNameElements.length; j++) {
+        if (teamNameElements[j].id == "teamname") {
+            teamNameElements[j].remove();
+            break;
+        }
+    }
+    
     newpost.appendChild(commentElement);
 
-    // Удаляем текст "Ознакомьтесь с нашими командами"
-    let teamName = newpost.querySelector("#teamname");
-    teamName.remove();
 
-    // Добавляем обработчик события клика для кнопки "Like"
-    let likeButton = newpost.querySelector(".button");
-    let likeCounter = newpost.querySelector(".counter");
-
-    let clickCount = 0;
+    
+    let likeButton = newpost.getElementsByClassName("button")[0];
+    let likeCounter = newpost.getElementsByClassName("counter")[0];
 
     likeButton.addEventListener("click", function() {
-        clickCount++;
-        likeCounter.textContent = clickCount;
+        let count = parseInt(likeCounter.textContent);
+        likeCounter.textContent = count + 1;
     });
-
-    postsBox.appendChild(newpost);
+    postsBox.appendChild(newpost); 
 }
-
-let button = document.getElementById("clickButton");
-let counter = document.getElementById("clickCount");
-
-button.addEventListener("click", function() {
-    counter.textContent++;
-});
